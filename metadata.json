@@ -1,0 +1,6 @@
+{
+  "name": "Train the Machine - Interactive AI Exhibition",
+  "description": "A hands-on camera-based AI exhibition where students and visitors teach an in-browser machine learning model using their own webcam, test live predictions, and discover data quality principles.",
+  "requestFramePermissions": ["camera"],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

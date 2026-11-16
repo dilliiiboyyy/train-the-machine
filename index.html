@@ -1,0 +1,56 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Train the Machine - Interactive AI Exhibition</title>
+    <meta name="description" content="Can you teach a computer to recognize patterns? Give the machine examples, let it learn, and test what it predicts in this hands-on IT exhibition." />
+    <meta property="og:title" content="Train the Machine - Interactive AI Exhibition" />
+    <meta property="og:description" content="Can you teach a computer to recognize patterns? Give the machine examples, let it learn, and test what it predicts in this hands-on IT exhibition." />
+    <meta property="og:type" content="website" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
+    <script>
+      // Filter benign Emscripten / TFLite WASM stderr logs
+      (function() {
+        function isTFLiteNoise(args) {
+          for (var i = 0; i < args.length; i++) {
+            var item = String(args[i]);
+            if (
+              item.indexOf('TensorFlow Lite') !== -1 ||
+              item.indexOf('XNNPACK') !== -1 ||
+              item.indexOf('Created TensorFlow Lite XNNPACK delegate') !== -1
+            ) {
+              return true;
+            }
+          }
+          return false;
+        }
+
+        ['error', 'warn', 'info', 'log'].forEach(function(method) {
+          var orig = console[method];
+          console[method] = function() {
+            if (isTFLiteNoise(arguments)) {
+              return; // Silently swallow - do not output to any console stream
+            }
+            return orig.apply(console, arguments);
+          };
+        });
+
+        window.addEventListener('error', function(event) {
+          if (event && event.message && isTFLiteNoise([event.message])) {
+            event.stopImmediatePropagation();
+            event.preventDefault();
+          }
+        }, true);
+      })();
+    </script>
+  </head>
+  <body class="bg-[#F7F3EA] text-[#20303C] antialiased selection:bg-[#E67E42]/20 selection:text-[#18324A]">
+    <div id="root"></div>
+    <script type="module" src="/src/main.jsx"></script>
+  </body>
+</html>
+
